@@ -1,4 +1,6 @@
 /*
+https://leetcode.com/problems/amount-of-time-for-binary-tree-to-be-infected/
+
 https://practice.geeksforgeeks.org/problems/burning-tree/1
 Burning Tree
 */

@@ -1,6 +1,8 @@
 /*
 https://practice.geeksforgeeks.org/problems/count-triplets-with-sum-smaller-than-x5549/1#
 Count triplets with sum smaller than X 
+https://www.lintcode.com/problem/918/
+https://leetcode.com/problems/3sum-smaller/
 */
 // { Driver Code Starts
 #include <bits/stdc++.h>

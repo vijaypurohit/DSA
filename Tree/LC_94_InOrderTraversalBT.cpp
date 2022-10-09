@@ -29,12 +29,10 @@ void inorder (TreeNode* root)
 
 class Solution {
 public:
-    vector<int> inorderTraversal(TreeNode* root) {
+    /*
+    vector<int> inorderTraversal_IterativeStack(TreeNode* root) {
         if(root==nullptr)
             return {};
-       //  ans1.clear();
-       //  inorder(root);
-       // return ans1;
             
         stack<TreeNode*> st;
         vector<int> ans;
@@ -47,45 +45,82 @@ public:
                 st.push(cur);
                 cur = cur->left;
             }
-            cur = st.top();
+            cur = st.top(); st.pop();
             ans.push_back(cur->val);
             cur = cur->right;
-            st.pop();
         }
         
         return ans;
     }
-};
-
-vector<int> inorderTraversal(TreeNode* root) {
-        if(!root)
-            return {};
+    
+    vector<int> inorderTraversal_modifiedStack(TreeNode* root) {
         stack<TreeNode*> st;
         vector<int> ans;
         st.push(root);
         
         while(!st.empty())
         {
-            TreeNode* t = st.top(); 
-            
+            TreeNode* t = st.top();   
             if(t->left)
             {    
                 st.push(t->left);
                 t->left=nullptr;
                 continue;
-            }
-            
+            } 
             ans.push_back(t->val);
-            st.pop();
-            
+            st.pop(); 
             if(t->right)
             {
                 st.push(t->right);
                 t->right = nullptr;
                 // continue;
-            }
-            
-        }
-    
+            } 
+        } 
         return ans;
     }
+    */
+    vector<int> morrisTraversal_Inorder(TreeNode* root)
+    {
+        vector<int> ans;
+        TreeNode* cur = root;
+        TreeNode* pre;
+        while(cur)
+        {
+            if(cur->left == nullptr)
+            {
+                ans.push_back(cur->val);
+                cur=cur->right;
+            }
+            else // has left sub-tree
+            {
+                pre = cur->left;
+                while(pre->right != nullptr and pre->right != cur)
+                    pre = pre->right;
+                /* non-modification
+                if(pre->right == nullptr){
+                    pre->right = cur;
+                    cur=cur->left;
+                }
+                else{
+                    pre->right = nullptr;
+                    ans.push_back(cur->val);
+                    cur = cur->right;
+                }
+                */
+                //   modification
+                pre->right = cur;
+                cur = cur->left;
+                pre->right->left = nullptr; //avoid infinte loop
+            }
+        }
+        return ans;
+    }
+    vector<int> inorderTraversal(TreeNode* root) {
+        if(!root)
+            return {}; 
+       //  ans1.clear(); inorder(root); return ans1; // recursive stack
+        // return inorderTraversal_IterativeStack(root);
+        // return inorderTraversal_modifiedStack(root);
+        return morrisTraversal_Inorder(root);
+    }
+};

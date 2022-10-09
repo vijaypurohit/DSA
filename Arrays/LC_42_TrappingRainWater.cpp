@@ -4,6 +4,7 @@ https://leetcode.com/problems/trapping-rain-water/
 */
 class Solution {
 public:
+    /*
     int trap1(vector<int>& height) {
         
         int n = height.size();
@@ -75,21 +76,17 @@ public:
         }
          return trapCount;
     }// end
-    
-    int trap(vector<int>& height) {
-        
-        int n = height.size();
-        int ans=0;
-         
-        if(n<=2) return ans;
-        
+    */
+    //TWO Pointer Approach
+    int trap_2ptr(int n, vector<int>& height) {  
+        int ans=0;  
         int l=0, r=n-1;
         int mleft = height[l];
         int mright = height[r];
         
         while(l<r)
         {
-            if(mleft < mright)
+            if(mleft < mright) //whichever is smaller height
             {
                 l++;
                 mleft = max(mleft, height[l]);
@@ -101,8 +98,35 @@ public:
                 mright = max(mright, height[r]);
                 ans+=mright-height[r];
             }
-        }
+        }//while
         
-         return ans;
-    }// end
+        return ans;
+    }// end trap
+    
+    int trap_2stack(int n, vector<int>& height) { 
+        int ans=0;  
+        int r=0;
+        stack<int> st;
+        while(r<n)
+        {
+            while(!st.empty() and height[st.top()] < height[r]){
+                int l = st.top(); st.pop();
+                if(st.empty()) break;
+                int dist = r - st.top() - 1;
+                int ht = min(height[r], height[st.top()]) - height[l];
+                ans += dist*ht;
+            }
+            st.push(r++);
+        }//while
+        
+        return ans;
+    }// end trap
+   
+    int trap(vector<int>& height) {  
+        int n = height.size();
+        if(n<=2) return 0; // required atleast three blocks to contain water
+        // return trap_2ptr(n, height); // 
+        return trap_2stack(n, height); // 
+        
+    }// end trap
 };
