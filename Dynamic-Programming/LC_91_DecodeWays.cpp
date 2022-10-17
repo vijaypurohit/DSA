@@ -2,6 +2,8 @@
 91. Decode Ways
 
 https://leetcode.com/problems/decode-ways/
+https://practice.geeksforgeeks.org/problems/total-decoding-messages1235/1
+https://www.interviewbit.com/problems/ways-to-decode/
 */
 
 class Solution {
