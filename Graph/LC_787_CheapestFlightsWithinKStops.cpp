@@ -6,28 +6,28 @@ https://leetcode.com/problems/cheapest-flights-within-k-stops/
 
 class Solution {
 public:
-//     int Bellman(int n, vector<vector<int>>& flights, int src, int dst, int k) {
-//         //Using Bellman Ford
-//         vector<int> dist(n, 1e9);
-//         int edges = flights.size();
+    int Bellman(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+        //Using Bellman Ford
+        vector<int> dist(n, 1e9);
+        int edges = flights.size();
         
-//         dist[src] = 0;
-//         for(int v=0; v<=k; v++)
-//         {
-//             vector<int> ndist = dist;
-//             for(int e=0; e<edges; e++)
-//             {
-//                 int u = flights[e][0], v = flights[e][1], p = flights[e][2];
-//                 if(dist[u] + p < ndist[v])
-//                     ndist[v] = dist[u]+p;
-//             }
-//             dist = ndist;
-//         }
+        dist[src] = 0;
+        for(int v=0; v<=k; v++)
+        {
+            vector<int> ndist = dist;
+            for(int e=0; e<edges; e++)
+            {
+                int u = flights[e][0], v = flights[e][1], p = flights[e][2];
+                if(dist[u] + p < ndist[v])
+                    ndist[v] = dist[u]+p;
+            }
+            dist = ndist;
+        }
         
-//         // for(int x: dist) cout<<x<<" "; cout<<endl;
+        // for(int x: dist) cout<<x<<" "; cout<<endl;
         
-//         return dist[dst] == 1e9 ? -1 : dist[dst];
-//     }
+        return dist[dst] == 1e9 ? -1 : dist[dst];
+    }
     
     typedef pair<int, pair<int,int>> pii; //cost, src, stops
     typedef pair<int,int> pi; // dst, price
@@ -77,25 +77,25 @@ public:
     int dijkstra_2(int n, int src, int dst, int k, vector<pi> adj[]) {
          
          priority_queue<pii, vector<pii>, greater<>> pq;
-         pq.push({-1, {0, src}});// level, cost, src
+         pq.push({0, {0, src}});// level/stops, cost, src
          
          vector<int> cost(n, 1e9);  
          cost[src] = 0; 
          
          while(!pq.empty())
          {
-             int l = pq.top().first;  
+             int s = pq.top().first;  
              int c = pq.top().second.first;  
              int u = pq.top().second.second; pq.pop(); 
              
-             if(l+1 > k) continue;
+             if(s >= k+1) continue;
              
              for(auto [v, price]: adj[u])
              {
                   if(c + price < cost[v]  )
                  {
                      cost[v] =c+price;  
-                     pq.push({l+1,{cost[v], v}});
+                     pq.push({s+1,{cost[v], v}});
                  }
              }
          }//while
